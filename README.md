@@ -28,3 +28,38 @@ int wrap(int x, int low, int high) {
   return (n >= 0) ? (n + low) : (n + high);
 }
 ```
+
+##### Range class
+```c++
+template<typename T>
+class Range {
+public:
+  Range(T min, T max) : min(_min), max(_max) {
+    assert(min_ <= max_);
+  }
+  
+  bool isInside(T value) const {
+    return (min_ <= value) && (value <= max_);
+  }
+  
+  T clamp(T value) const {
+    return ::clamp(value, min_, max_);
+  }
+  
+  T wrap(T value) const {
+    return ::wrap(value, min_, max_);
+  }
+  
+  T min() const {
+    return min_;
+  }
+  
+  T max() const {
+    return max_;
+  }
+  
+private:
+  T min_;
+  T max_;
+}
+```
