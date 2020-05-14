@@ -63,3 +63,29 @@ private:
   T max_;
 }
 ```
+
+##### Tuple for-each
+
+```c++
+template<size_t Index, typename Tuple, typename Functor>
+auto tuple_at(const Tuple& tpl, const Functor& func) -> void
+{
+	const auto& v = std::get<Index>(tpl);
+	func( v );
+}
+
+template<typename Tuple, typename Functor, size_t Index = 0>
+auto tuple_for_each(const Tuple& tpl, const Functor& f) -> void
+{
+	constexpr auto tuple_size = std::tuple_size_v<Tuple>;
+	if constexpr(Index < tuple_size) {
+		tuple_at<Index>(tpl, f);
+		tuple_for_each<Tuple, Functor, Index+i>(tpl, f);
+	}
+}
+
+// example
+auto tpl = std::make_tuple(1, true, std::string{"Jedi"});
+tuple_for_earch(tpl, [](const auto& v) { std::cout << v << " "; });
+```
+
