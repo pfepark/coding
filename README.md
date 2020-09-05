@@ -89,3 +89,22 @@ auto tpl = std::make_tuple(1, true, std::string{"Jedi"});
 tuple_for_earch(tpl, [](const auto& v) { std::cout << v << " "; });
 ```
 
+##### Tuple any_of
+
+```c++
+template<typename Tuple, typename Functor, size_t Index = 0>
+auto tuple_any_of(const Tuple& tp1, const Functor& f) -> bool
+{
+    constexpr auto tuple_size = std::tuple_size_v<Tuple>;
+    if constexpr(Index < tuple_size)
+    {
+        bool success = f(std::get<Index>(tp1));
+        return success ? true : tuple_any_of<Tuple, Functor, Index+1>(tp1, f);
+    }
+    else
+    {
+        return false;
+    }
+}
+```
+
